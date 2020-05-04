@@ -1,11 +1,11 @@
 import React from 'react';
 import {StyleSheet, Text, View, TouchableHighlight} from 'react-native';
 
-function ColorButton({backgroundColor, onSelect}) {
+function ColorButton({backgroundColor, changeColor}) {
   return (
     <TouchableHighlight
       style={styles.button}
-      onPress={() => onSelect(backgroundColor)}
+      onPress={() => changeColor(backgroundColor)}
       underlayColor="orange">
       <View style={styles.row}>
         <View style={[styles.sample, {backgroundColor}]} />
