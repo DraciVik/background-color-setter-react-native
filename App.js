@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, ScrollView} from 'react-native';
+import {StyleSheet, FlatList, SafeAreaView} from 'react-native';
 import ColorButton from './components/ColorButton';
+import COLORS from './components/availableColors';
 
 export default class App extends Component {
   constructor() {
@@ -18,18 +19,17 @@ export default class App extends Component {
   render() {
     const {backgroundColor} = this.state;
     return (
-      <ScrollView style={[styles.container, {backgroundColor}]}>
-        <ColorButton backgroundColor="red" changeColor={this.changeColor} />
-        <ColorButton backgroundColor="blue" changeColor={this.changeColor} />
-        <ColorButton backgroundColor="green" changeColor={this.changeColor} />
-        <ColorButton backgroundColor="white" changeColor={this.changeColor} />
-        <ColorButton backgroundColor="salmon" changeColor={this.changeColor} />
-        <ColorButton backgroundColor="#00ff00" changeColor={this.changeColor} />
-        <ColorButton
-          backgroundColor="rgb(255,0,255)"
-          changeColor={this.changeColor}
-        />
-      </ScrollView>
+      <FlatList
+        data={COLORS}
+        renderItem={({item}) => (
+          <ColorButton
+            key={item.id}
+            backgroundColor={item.name}
+            changeColor={this.changeColor}
+          />
+        )}
+        style={[styles.container, {backgroundColor}]}
+      />
     );
   }
 }
