@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {StyleSheet, FlatList, Text} from 'react-native';
+import {StyleSheet, FlatList} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import ColorButton from './components/ColorButton';
 import ColorForm from './components/ColorForm';
 import primaryColors from './components/availableColors';
@@ -15,6 +16,28 @@ export default class App extends Component {
     this.onNewColor = this.onNewColor.bind(this);
   }
 
+  async componentDidMount() {
+    try {
+      const data = await AsyncStorage.getItem('@ColorListStore:Colors');
+      if (data !== null) {
+        const availableColors = JSON.parse(data);
+        this.setState({availableColors});
+      }
+    } catch (err) {
+      console.error('Error loading colors', err);
+    }
+  }
+  saveColors = async colors => {
+    try {
+      await AsyncStorage.setItem(
+        '@ColorListStore:Colors',
+        JSON.stringify(colors),
+      );
+    } catch (e) {
+      console.error('Error loading colors', e);
+    }
+  };
+
   changeColor(backgroundColor) {
     this.setState({backgroundColor});
   }
@@ -28,6 +51,7 @@ export default class App extends Component {
       this.setState({
         availableColors: allColors,
       });
+      this.saveColors(allColors);
     }
   }
   render() {
